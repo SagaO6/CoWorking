@@ -12,6 +12,8 @@ import javax.swing.ImageIcon;
 
 public class Sobre extends JDialog {
 	public Sobre() {
+		setTitle("Sobre");
+		setBounds(550,250,495,365);
 		setResizable(false);
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		setModal(true);
@@ -23,33 +25,33 @@ public class Sobre extends JDialog {
 		JLabel titulo = new JLabel("Sobre o software");
 		titulo.setFont(new Font("Tahoma", Font.BOLD, 14));
 		titulo.setHorizontalAlignment(SwingConstants.CENTER);
-		titulo.setBounds(0, 11, 503, 14);
+		titulo.setBounds(0, 11, 479, 14);
 		getContentPane().add(titulo);
 		
 		JLabel descricao1 = new JLabel("O software CoWorking trata-se de um protótipo cujo objetivo.");
 		descricao1.setHorizontalAlignment(SwingConstants.CENTER);
-		descricao1.setBounds(0, 78, 503, 14);
+		descricao1.setBounds(0, 78, 479, 14);
 		getContentPane().add(descricao1);
 		
 		JLabel descricao2 = new JLabel("É possibilitar o gerenciamento de reserva de salas em um espaço colaborativo.");
 		descricao2.setHorizontalAlignment(SwingConstants.CENTER);
-		descricao2.setBounds(0, 103, 503, 29);
+		descricao2.setBounds(0, 103, 479, 29);
 		getContentPane().add(descricao2);
 		
 		JLabel versao = new JLabel("Versão 1.0.0");
 		versao.setHorizontalAlignment(SwingConstants.CENTER);
-		versao.setBounds(0, 198, 503, 14);
+		versao.setBounds(0, 198, 479, 14);
 		getContentPane().add(versao);
 		
 		JLabel atualizacao = new JLabel("Última atualização: 31/01/2024");
 		atualizacao.setHorizontalAlignment(SwingConstants.CENTER);
-		atualizacao.setBounds(0, 223, 503, 14);
+		atualizacao.setBounds(0, 223, 479, 14);
 		getContentPane().add(atualizacao);
 		
 		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setIcon(new ImageIcon(Sobre.class.getResource("/img/mitLicense.png")));
-		lblNewLabel.setBounds(391, 241, 97, 83);
+		lblNewLabel.setBounds(406, 248, 97, 83);
 		getContentPane().add(lblNewLabel);
 		
 	}
