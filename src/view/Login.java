@@ -2,10 +2,13 @@ package view;
 
 import javax.swing.JDialog;
 import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.sql.Connection;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-
+import model.DAO;
 import java.awt.EventQueue;
 import java.awt.Font;
 import javax.swing.JPasswordField;
@@ -16,9 +19,16 @@ import javax.swing.ImageIcon;
 public class Login extends JDialog {
 	private JTextField inputLogin;
 	private JPasswordField inputSenha;
+	
 	public Login() {
-		setTitle("Login");
+		addWindowListener(new WindowAdapter(){
+			public void windowActivated(WindowEvent e) {
+				statusConexaoBanco();
+				
+			}
+		});
 		
+		setTitle("Login");
 		setBounds(550,250,477,340);
 		setResizable(false);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/img/logo.png")));
@@ -56,11 +66,57 @@ public class Login extends JDialog {
 		tituloLogin.setBounds(168, 11, 113, 29);
 		getContentPane().add(tituloLogin);
 		
-		JLabel imgDatabase = new JLabel("");
+		imgDatabase = new JLabel("");
 		imgDatabase.setIcon(new ImageIcon(Login.class.getResource("/img/databaseOff.png")));
 		imgDatabase.setBounds(10, 222, 48, 48);
 		getContentPane().add(imgDatabase);
 	}
+	
+	DAO dao = new DAO();
+	private JLabel imgDatabase;
+	
+	private void statusConexaoBanco() {
+		try {
+			
+			Connection conexaoBanco = dao.conectar();
+		
+		if (conexaoBanco == null) {
+			//Escolher a imagem
+			imgDatabase.setIcon(new ImageIcon (Login.class.getResource("/img/databaseOff.png")));
+			
+		}
+		
+		else {
+			//Trocar a imagem se não houver conexão
+			imgDatabase.setIcon(new ImageIcon (Login.class.getResource("/img/databaseOn.png")));
+			
+		}
+		
+		conexaoBanco.close();
+		
+		}
+		
+		catch (Exception e) {
+			System.out.println(e);
+		}
+	}
+	
+	private void logar() {
+		String read = "select * from funcionario where login=? and senha senha=md5(?)";
+		
+		
+		try {
+			
+		} 
+		
+		catch (Exception e) {
+			System.out.println(e);
+			
+		}
+	}
+	
+
+	
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -75,9 +131,6 @@ public class Login extends JDialog {
 					
 				}
 			}
-			
 		});
-
-
 	}
 }
