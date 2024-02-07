@@ -2,9 +2,14 @@ package view;
 
 import javax.swing.JDialog;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -19,6 +24,7 @@ import javax.swing.ImageIcon;
 public class Login extends JDialog {
 	private JTextField inputLogin;
 	private JPasswordField inputSenha;
+
 	
 	public Login() {
 		addWindowListener(new WindowAdapter(){
@@ -59,6 +65,14 @@ public class Login extends JDialog {
 		btnLogin.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnLogin.setBounds(184, 231, 89, 23);
 		getContentPane().add(btnLogin);
+		
+		btnLogin.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				
+				logar();
+
+			}
+		});
 		
 		JLabel tituloLogin = new JLabel("Acessar conta");
 		tituloLogin.setHorizontalAlignment(SwingConstants.CENTER);
@@ -102,22 +116,46 @@ public class Login extends JDialog {
 	}
 	
 	private void logar() {
-		String read = "select * from funcionario where login=? and senha senha=md5(?)";
+		String read = "select * from funcionario where login=? and senha=md5(?)";
 		
 		
 		try {
+			//Estabelecer a conexão
+			Connection conexaoBanco = dao.conectar();
 			
-		} 
-		
+			//preparar a execução do script SQL
+			PreparedStatement executarSQL = conexaoBanco.prepareStatement(read);
+			
+			//Atribuir valore de login e senha
+			//Substituir as interrogações ? ? pelo conteudo da caixa de texto (input)
+			executarSQL.setString(1, inputLogin.getText());
+			executarSQL.setString(2, inputSenha.getText());
+			
+			//Executar os comandos SQL e de acordo com o resultado liberar os recursos na tela
+			ResultSet resultadoExecucao = executarSQL.executeQuery();
+			
+			//Validação do funcionario (autenticação)
+			//resultadoExecucao.next() significa que o login e a senha existem, ou seja, correspodem
+			
+			if(resultadoExecucao.next()) {
+				Home home = new Home();
+				home.setVisible(true);
+			
+			}
+			
+			else {
+				Ger ger = new Ger();
+				ger.setVisible(true);
+			}
+		}
+
 		catch (Exception e) {
 			System.out.println(e);
-			
+
 		}
 	}
-	
 
 	
-
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
