@@ -3,26 +3,22 @@ package view;
 import java.awt.EventQueue;
 
 import javax.swing.JDialog;
-import javax.swing.JLabel;
-import java.awt.BorderLayout;
-import javax.swing.SwingConstants;
+import java.awt.Toolkit;
 
-public class Ger extends JDialog {
-	public Ger() {
-		
-		JLabel lblNewLabel = new JLabel("burrao");
+public class Funcionarios extends JDialog {
+	public Funcionarios() {
 		setBounds(550,250,477,340);
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		getContentPane().add(lblNewLabel, BorderLayout.CENTER);
+		setTitle("Funcionarios");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Funcionarios.class.getResource("/img/logo.png")));
+		getContentPane().setLayout(null);
+		setResizable(false);
 	}
-	
-	
-	
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Ger dialog = new Ger();
+					Funcionarios dialog = new Funcionarios();
 					dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 					dialog.setVisible(true);
 				}
@@ -31,6 +27,10 @@ public class Ger extends JDialog {
 					
 				}
 			}
+			
 		});
+
+
 	}
+
 }

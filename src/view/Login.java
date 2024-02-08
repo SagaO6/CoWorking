@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import model.DAO;
@@ -140,13 +141,20 @@ public class Login extends JDialog {
 			if(resultadoExecucao.next()) {
 				Home home = new Home();
 				home.setVisible(true);
+				dispose();
 			
 			}
 			
 			else {
-				Ger ger = new Ger();
-				ger.setVisible(true);
+				JOptionPane.showMessageDialog(null, "Login e/ou senha invalido(s)!");
+				inputLogin.setText(null);
+				inputSenha.setText(null);
+				inputLogin.requestFocus();
+				
 			}
+			
+			conexaoBanco.close();
+			
 		}
 
 		catch (Exception e) {
