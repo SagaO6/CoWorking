@@ -7,17 +7,36 @@ import java.awt.BorderLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.text.DateFormat;
+import java.util.Date;
 
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.Cursor;
 import java.awt.Color;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 public class Home extends JDialog {
 	
+	public JPanel panelUsuario;
+	public JLabel txtUsuarioLogado;
+	public JLabel txtData;
+	
 	//Construtor
 	public Home(){
+		
+		addWindowListener (new WindowAdapter() {
+			public void windowActivated(WindowEvent e) {
+				Date dataSistema = new Date();
+				DateFormat formatadorData = DateFormat.getDateInstance(DateFormat.FULL);
+				txtData.setText(formatadorData.format(dataSistema));
+			}
+		});
+		
 		getContentPane().setBackground(new Color(192, 192, 192));
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Home.class.getResource("/img/logo.png")));
 		setTitle("Home");
@@ -29,7 +48,7 @@ public class Home extends JDialog {
 		btnUser.setBorderPainted(false);
 		btnUser.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnUser.setIcon(new ImageIcon(Home.class.getResource("/img/user.png")));
-		btnUser.setBounds(10, 11, 128, 99);
+		btnUser.setBounds(0, 89, 128, 99);
 		getContentPane().add(btnUser);
 		btnUser.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
@@ -43,7 +62,7 @@ public class Home extends JDialog {
 		btnRoom.setBorderPainted(false);
 		btnRoom.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnRoom.setIcon(new ImageIcon(Home.class.getResource("/img/room.png")));
-		btnRoom.setBounds(169, 11, 128, 99);
+		btnRoom.setBounds(170, 89, 128, 99);
 		getContentPane().add(btnRoom);
 		btnRoom.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
@@ -59,8 +78,23 @@ public class Home extends JDialog {
 		btnReserve.setBorderPainted(false);
 		btnReserve.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnReserve.setIcon(new ImageIcon(Home.class.getResource("/img/reserve.png")));
-		btnReserve.setBounds(328, 11, 123, 99);
+		btnReserve.setBounds(338, 89, 123, 99);
 		getContentPane().add(btnReserve);
+		
+		panelUsuario = new JPanel();
+		panelUsuario.setBounds(0, 258, 461, 43);
+		getContentPane().add(panelUsuario);
+		panelUsuario.setLayout(null);
+		
+		txtUsuarioLogado = new JLabel("");
+		txtUsuarioLogado.setHorizontalAlignment(SwingConstants.LEFT);
+		txtUsuarioLogado.setBounds(10, 11, 180, 14);
+		panelUsuario.add(txtUsuarioLogado);
+		
+		txtData = new JLabel("");
+		txtData.setBounds(229, 11, 222, 14);
+		panelUsuario.add(txtData);
+		
 		btnReserve.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
 				Reservas reservas = new Reservas();

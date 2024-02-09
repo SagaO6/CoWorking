@@ -118,7 +118,18 @@ public class Login extends JDialog {
 	
 	private void logar() {
 		String read = "select * from funcionario where login=? and senha=md5(?)";
+		//Validação do login do usuario
+		if(inputLogin.getText().isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Login do usuario obrigatorio!");
+			inputLogin.requestFocus();
+		}
 		
+		else if (inputSenha.getPassword().length == 0) {
+			JOptionPane.showMessageDialog(null, "Senha ou usuario obrigatoria!");
+			inputSenha.requestFocus();
+		}
+		
+		else {
 		
 		try {
 			//Estabelecer a conexão
@@ -141,6 +152,7 @@ public class Login extends JDialog {
 			if(resultadoExecucao.next()) {
 				Home home = new Home();
 				home.setVisible(true);
+				home.txtUsuarioLogado.setText("Usuario: " + resultadoExecucao.getString(2));
 				dispose();
 			
 			}
@@ -160,6 +172,7 @@ public class Login extends JDialog {
 		catch (Exception e) {
 			System.out.println(e);
 
+		}
 		}
 	}
 
