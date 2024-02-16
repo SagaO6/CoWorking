@@ -25,6 +25,7 @@ public class Home extends JDialog {
 	public JPanel panelUsuario;
 	public JLabel txtUsuarioLogado;
 	public JLabel txtData;
+	public JLabel txtPerfilLogado;
 	
 	//Construtor
 	public Home(){
@@ -88,12 +89,16 @@ public class Home extends JDialog {
 		
 		txtUsuarioLogado = new JLabel("");
 		txtUsuarioLogado.setHorizontalAlignment(SwingConstants.LEFT);
-		txtUsuarioLogado.setBounds(10, 11, 180, 14);
+		txtUsuarioLogado.setBounds(10, 0, 180, 14);
 		panelUsuario.add(txtUsuarioLogado);
 		
 		txtData = new JLabel("");
 		txtData.setBounds(229, 11, 222, 14);
 		panelUsuario.add(txtData);
+		
+		txtPerfilLogado = new JLabel("");
+		txtPerfilLogado.setBounds(10, 25, 150, 14);
+		panelUsuario.add(txtPerfilLogado);
 		
 		btnReserve.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
