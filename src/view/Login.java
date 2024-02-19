@@ -38,6 +38,7 @@ public class Login extends JDialog {
 		});
 		
 		setTitle("Login");
+		
 		setBounds(550,250,477,340);
 		setResizable(false);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource("/img/logo.png")));
