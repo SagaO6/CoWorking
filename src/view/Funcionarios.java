@@ -40,6 +40,13 @@ public class Funcionarios extends JDialog {
 	private JTextField inputEmail;
 	private JTextField inputLogin;
 	private JPasswordField inputSenha;
+	private JComboBox inputPerfil;
+	public JButton btnCreate;
+	public JButton btnUpdate;
+	public JButton btnDelete;
+	private JTable tblFuncionarios;
+	private JButton btnPesquisar;
+	public JTextField inputID;
 
 	public Funcionarios() {
 		setTitle("Funcionários");
@@ -125,7 +132,7 @@ public class Funcionarios extends JDialog {
 
 		btnUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				atualizar();
+				UpdateFuncionario();
 			}
 		});
 
@@ -136,6 +143,12 @@ public class Funcionarios extends JDialog {
 		btnDelete.setIcon(new ImageIcon(Funcionarios.class.getResource("/img/delete.png")));
 		btnDelete.setBounds(507, 328, 83, 59);
 		getContentPane().add(btnDelete);
+
+		btnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				deletarFuncionario();
+			}
+		});
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(74, 73, 494, 87);
@@ -177,49 +190,66 @@ public class Funcionarios extends JDialog {
 	}
 
 	DAO dao = new DAO();
-	private JComboBox inputPerfil;
-	public JButton btnCreate;
-	public JButton btnUpdate;
-	public JButton btnDelete;
-	private JTable tblFuncionarios;
-	private JButton btnPesquisar;
-	public JTextField inputID;
 
 	private void adicionarFuncionario() {
 
 		String create = "insert into funcionario (nomeFunc, login, senha, Perfil, email) values (?, ?, md5(?), ?, ?)";
 
-		try {
-			// Estabelecer a conexao
-			Connection conexaoBanco = dao.conectar();
-
-			PreparedStatement executarSQL = conexaoBanco.prepareStatement(create);
-
-			// Substituir os pontos de interrogação pelo conteudo das caixas de texto
-			// (inputs)
-			executarSQL.setString(1, inputNome.getText());
-			executarSQL.setString(2, inputLogin.getText());
-			executarSQL.setString(3, inputSenha.getText());
-			executarSQL.setString(4, inputPerfil.getSelectedItem().toString());
-			executarSQL.setString(5, inputEmail.getText());
-
-			// Executar os comandos SQL e inserir o funcionario no banco de dados
-			executarSQL.executeUpdate();
-
-			JOptionPane.showMessageDialog(null, "Usuario cadstrado com sucesso");
-
-			limparCampos();
-			conexaoBanco.close();
-		}
-
-		catch (SQLIntegrityConstraintViolationException error) {
-			JOptionPane.showMessageDialog(null, "Login em uso. \nEscolha outro nome de usuário");
-			limparCampos();
+		if (inputNome.getText().isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Nome do usuário Obrigatório!");
 
 		}
 
-		catch (Exception e) {
-			System.out.println(e);
+		else if (inputLogin.getText().isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Login de usuário Obrigatório!");
+
+		}
+
+		else if (inputSenha.getPassword().length == 0) {
+			JOptionPane.showMessageDialog(null, "Senha do usuário Obrigatório!");
+
+		}
+
+		else if (inputEmail.getText().isEmpty()) {
+			JOptionPane.showMessageDialog(null, "E-mail do usuário Obrigatório!");
+
+		}
+
+		else {
+
+			try {
+				// Estabelecer a conexao
+				Connection conexaoBanco = dao.conectar();
+
+				PreparedStatement executarSQL = conexaoBanco.prepareStatement(create);
+
+				// Substituir os pontos de interrogação pelo conteudo das caixas de texto
+				// (inputs)
+				executarSQL.setString(1, inputNome.getText());
+				executarSQL.setString(2, inputLogin.getText());
+				executarSQL.setString(3, inputSenha.getText());
+				executarSQL.setString(4, inputPerfil.getSelectedItem().toString());
+				executarSQL.setString(5, inputEmail.getText());
+
+				// Executar os comandos SQL e inserir o funcionario no banco de dados
+				executarSQL.executeUpdate();
+
+				JOptionPane.showMessageDialog(null, "Usuario cadastrado com sucesso");
+
+				limparCampos();
+				conexaoBanco.close();
+			}
+
+			catch (SQLIntegrityConstraintViolationException error) {
+				JOptionPane.showMessageDialog(null, "Login em uso. \nEscolha outro nome de usuário");
+				limparCampos();
+
+			}
+
+			catch (Exception e) {
+				System.out.println(e);
+
+			}
 
 		}
 
@@ -287,7 +317,6 @@ public class Funcionarios extends JDialog {
 				inputSenha.setText(resultadoExecucao.getString(4));
 				inputPerfil.setSelectedItem(resultadoExecucao.getString(5));
 				inputEmail.setText(resultadoExecucao.getString(6));
-				// Propositalmete a professora não colocou o email
 
 			}
 
@@ -313,41 +342,96 @@ public class Funcionarios extends JDialog {
 
 	}
 
-	private void atualizar() {
+	private void UpdateFuncionario() {
 		String updateBtn = "update funcionario set nomeFunc = ?, login = ?, senha = md5(?), perfil = ?, email = ? where idFuncionario = ?;";
 
-		try {
+		if (inputNome.getText().isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Nome do usuário Obrigatório!");
+			inputNome.requestFocus();
 
+		}
+
+		else if (inputLogin.getText().isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Login de usuário Obrigatório!");
+			inputLogin.requestFocus();
+
+		}
+
+		else if (inputSenha.getPassword().length == 0) {
+			JOptionPane.showMessageDialog(null, "Senha do usuário Obrigatório!");
+			inputSenha.requestFocus();
+
+		}
+
+		else if (inputEmail.getText().isEmpty()) {
+			JOptionPane.showMessageDialog(null, "E-mail do usuário Obrigatório!");
+			inputEmail.requestFocus();
+
+		}
+
+		else {
+
+			try {
+
+				Connection conexaoBanco = dao.conectar();
+
+				PreparedStatement executarSQL = conexaoBanco.prepareStatement(updateBtn);
+
+				executarSQL.setString(1, inputNome.getText());
+				executarSQL.setString(2, inputLogin.getText());
+				executarSQL.setString(3, inputSenha.getText());
+				executarSQL.setString(4, inputPerfil.getSelectedItem().toString());
+				executarSQL.setString(5, inputEmail.getText());
+				executarSQL.setString(6, inputID.getText());
+
+				executarSQL.executeUpdate();
+
+				JOptionPane.showMessageDialog(null, "Usuario atualizado com sucesso");
+
+				limparCampos();
+
+				conexaoBanco.close();
+
+			}
+
+			catch (SQLIntegrityConstraintViolationException error) {
+				JOptionPane.showMessageDialog(null, "Login e/ou email em uso. \nEscolha novos dados.");
+				limparCampos();
+
+			}
+
+			catch (Exception e) {
+				System.out.println(e);
+
+			}
+
+		}
+
+	}
+
+	private void deletarFuncionario() {
+		String delete = "delete from funcionario where idFuncionario = ?;";
+
+		try {
 			Connection conexaoBanco = dao.conectar();
 
-			PreparedStatement executarSQL = conexaoBanco.prepareStatement(updateBtn);
+			PreparedStatement executarSQL = conexaoBanco.prepareStatement(delete);
 
-			executarSQL.setString(1, inputNome.getText());
-			executarSQL.setString(2, inputLogin.getText());
-			executarSQL.setString(3, inputSenha.getText());
-			executarSQL.setString(4, inputPerfil.getSelectedItem().toString());
-			executarSQL.setString(5, inputEmail.getText());
-			executarSQL.setString(6, inputID.getText());
+			executarSQL.setString(1, inputID.getText());
 
 			executarSQL.executeUpdate();
 
-			JOptionPane.showMessageDialog(null, "Usuario atualizado com sucesso");
+			JOptionPane.showMessageDialog(null, "Usuário deletado com sucesso.");
 
 			limparCampos();
 
 			conexaoBanco.close();
-
-		} catch (SQLIntegrityConstraintViolationException error) {
-			JOptionPane.showMessageDialog(null, "Login e/ou email em uso. \nEscolha novos dados.");
-			limparCampos();
-
 		}
 
 		catch (Exception e) {
-			System.out.println(e);
+			System.out.print(e);
 
 		}
-
 	}
 
 	public static void main(String[] args) {
